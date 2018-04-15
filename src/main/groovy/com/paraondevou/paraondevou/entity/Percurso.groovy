@@ -1,23 +1,26 @@
 package com.paraondevou.paraondevou.entity
 
-import groovy.transform.EqualsAndHashCode
-import groovy.transform.ToString
-
 import javax.persistence.Entity
 import javax.persistence.GeneratedValue
+import javax.persistence.GenerationType
 import javax.persistence.Id
+import javax.persistence.ManyToOne
 
 @Entity
-@ToString
-@EqualsAndHashCode(includes = ['id'])
 class Percurso {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     Long id
 
-    Long numOrdem
+    @ManyToOne
     Local localPartida
+
+    @ManyToOne
     Local localDestino
+
+    @ManyToOne
     Imagem imagem
+
+    Long numOrdem
     String descricao
 }
