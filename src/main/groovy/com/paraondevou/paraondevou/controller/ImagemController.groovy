@@ -1,7 +1,7 @@
 package com.paraondevou.paraondevou.controller
 
-import com.paraondevou.paraondevou.entity.Local
-import com.paraondevou.paraondevou.repository.LocalRepository
+import com.paraondevou.paraondevou.entity.Imagem
+import com.paraondevou.paraondevou.repository.ImagemRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
@@ -9,14 +9,14 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-@RequestMapping("/local")
-class LocalController {
+@RequestMapping('/imagem')
+class ImagemController {
     @Autowired
-    LocalRepository localRepository
+    ImagemRepository imagemRepository
 
-    @GetMapping("/{id}")
-    Local listar(@PathVariable("id") Long id) {
-        Optional<Local> localBD = localRepository.findById(id)
-        localBD.get()
+    @GetMapping('/{id}')
+    Imagem listar(@PathVariable("id") Long id) {
+        Optional<Imagem> imagemBD = imagemRepository.findById(id)
+        imagemBD.get()
     }
 }
