@@ -19,6 +19,11 @@ class ImagemController {
     @Autowired
     ImagemRepository imagemRepository
 
+    @GetMapping
+    List<Imagem> listarTudo() {
+        imagemRepository.findAll()
+    }
+
     @GetMapping("/{id}")
     ResponseEntity listar(@PathVariable("id") Long id) {
         Optional<Imagem> imagemBD = imagemRepository.findById(id)
@@ -30,12 +35,7 @@ class ImagemController {
         }
     }
 
-    @GetMapping("/")
-    List<Imagem> listarTudo() {
-        imagemRepository.findAll()
-    }
-
-    @PostMapping("/")
+    @PostMapping
     ResponseEntity inserirNovo(@RequestBody Imagem imagem) {
         imagemRepository.save(imagem)
         ResponseEntity.ok(imagem)

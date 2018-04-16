@@ -17,6 +17,11 @@ class RotaController {
     @Autowired
     RotaRepository rotaRepository
 
+    @GetMapping
+    List<Rota> listarTudo() {
+        rotaRepository.findAll()
+    }
+
     @GetMapping("/{id}")
     ResponseEntity listar(@PathVariable("id") Long id) {
         Optional<Rota> rotaBD = rotaRepository.findById(id)
@@ -25,11 +30,6 @@ class RotaController {
         } else {
             ResponseEntity.notFound().build()
         }
-    }
-
-    @GetMapping("/")
-    List<Rota> listarTudo() {
-         rotaRepository.findAll()
     }
 
     @PostMapping("/")

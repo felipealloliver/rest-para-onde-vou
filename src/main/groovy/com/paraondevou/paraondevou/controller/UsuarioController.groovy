@@ -18,6 +18,11 @@ class UsuarioController {
     @Autowired
     UsuarioRepository usuarioRepository
 
+    @GetMapping
+    List<Usuario> listarTudo() {
+        usuarioRepository.findAll()
+    }
+
     @GetMapping("/{id}")
     ResponseEntity listar(@PathVariable("id") Long id) {
         Optional<Usuario> usuarioBD = usuarioRepository.findById(id)
@@ -27,11 +32,6 @@ class UsuarioController {
         } else {
             ResponseEntity.notFound().build()
         }
-    }
-
-    @GetMapping("/")
-    List<Usuario> listarTudo() {
-         usuarioRepository.findAll()
     }
 
     @PostMapping("/")

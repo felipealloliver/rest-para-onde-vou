@@ -19,6 +19,11 @@ class LocalController {
     @Autowired
     LocalRepository localRepository
 
+    @GetMapping
+    List<Local> listarTudo() {
+        localRepository.findAll()
+    }
+
     @GetMapping("/{id}")
     ResponseEntity listar(@PathVariable("id") Long id) {
         Optional<Local> localBD = localRepository.findById(id)
@@ -28,11 +33,6 @@ class LocalController {
         } else {
             ResponseEntity.notFound().build()
         }
-    }
-
-    @GetMapping("/")
-    List<Local> listarTudo() {
-        localRepository.findAll()
     }
 
     @PostMapping("/")

@@ -18,6 +18,11 @@ class PercursoController {
     @Autowired
     PercursoRepository percursoRepository
 
+    @GetMapping
+    List<Percurso> listarTudo() {
+        percursoRepository.findAll()
+    }
+
     @GetMapping("/{id}")
     ResponseEntity listar(@PathVariable("id") Long id) {
         Optional<Percurso> percursoBD = percursoRepository.findById(id)
@@ -27,11 +32,6 @@ class PercursoController {
         } else {
             ResponseEntity.notFound().build()
         }
-    }
-
-    @GetMapping("/")
-    List<Percurso> listarTudo() {
-         percursoRepository.findAll()
     }
 
     @PostMapping("/")
