@@ -23,10 +23,10 @@ class LocalController {
     ResponseEntity listar(@PathVariable("id") Long id) {
         Optional<Local> localBD = localRepository.findById(id)
 
-        if (localBD.empty()) {
-            ResponseEntity.notFound().build()
-        } else {
+        if (localBD) {
             ResponseEntity.ok(localBD.get())
+        } else {
+            ResponseEntity.notFound().build()
         }
     }
 

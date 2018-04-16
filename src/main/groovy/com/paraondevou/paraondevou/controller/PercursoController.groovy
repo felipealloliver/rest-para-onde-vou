@@ -22,10 +22,10 @@ class PercursoController {
     ResponseEntity listar(@PathVariable("id") Long id) {
         Optional<Percurso> percursoBD = percursoRepository.findById(id)
 
-        if (percursoBD.empty()) {
-            ResponseEntity.notFound().build()
-        } else {
+        if (percursoBD) {
             ResponseEntity.ok(percursoBD.get())
+        } else {
+            ResponseEntity.notFound().build()
         }
     }
 

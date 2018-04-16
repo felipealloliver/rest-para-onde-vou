@@ -20,10 +20,10 @@ class RotaController {
     @GetMapping("/{id}")
     ResponseEntity listar(@PathVariable("id") Long id) {
         Optional<Rota> rotaBD = rotaRepository.findById(id)
-        if (rotaBD.empty()) {
-            ResponseEntity.notFound().build()
-        } else {
+        if (rotaBD) {
             ResponseEntity.ok(rotaBD.get())
+        } else {
+            ResponseEntity.notFound().build()
         }
     }
 

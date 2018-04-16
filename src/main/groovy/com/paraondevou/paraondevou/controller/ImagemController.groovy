@@ -23,10 +23,10 @@ class ImagemController {
     ResponseEntity listar(@PathVariable("id") Long id) {
         Optional<Imagem> imagemBD = imagemRepository.findById(id)
 
-        if (imagemBD.empty()) {
-            ResponseEntity.notFound().build()
-        } else {
+        if (imagemBD) {
             ResponseEntity.ok(imagemBD.get())
+        } else {
+            ResponseEntity.notFound().build()
         }
     }
 
