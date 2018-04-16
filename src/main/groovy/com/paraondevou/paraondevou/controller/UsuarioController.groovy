@@ -23,20 +23,20 @@ class UsuarioController {
         Optional<Usuario> usuarioBD = usuarioRepository.findById(id)
 
         if (usuarioBD) {
-            ResponseEntity.ok(usuarioDB.get())
+            ResponseEntity.ok(usuarioBD.get())
         } else {
             ResponseEntity.notFound().build()
         }
     }
 
-    @GetMapping("/all")
-    Usuario listarTudo() {
-        List<Usuario> lista = usuarioRepository.findAll()
+    @GetMapping("/")
+    List<Usuario> listarTudo() {
+         usuarioRepository.findAll()
     }
 
     @PostMapping("/")
     ResponseEntity<Usuario> inserirNovo(@RequestBody Usuario usuario) {
-        def usuarioBD = usuarioRepository.findByEmail(usuario.email)
+        def usuarioBD = usuarioRepository.findOneByEmail(usuario.email)
 
         if (usuarioBD) {
             ResponseEntity.status(HttpStatus.FORBIDDEN).body(usuario)

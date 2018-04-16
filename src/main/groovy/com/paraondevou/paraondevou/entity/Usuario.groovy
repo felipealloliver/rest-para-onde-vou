@@ -1,7 +1,5 @@
 package com.paraondevou.paraondevou.entity
 
-import org.hibernate.validator.constraints.UniqueElements
-
 import javax.persistence.Column
 import javax.persistence.Entity
 import javax.persistence.GeneratedValue
