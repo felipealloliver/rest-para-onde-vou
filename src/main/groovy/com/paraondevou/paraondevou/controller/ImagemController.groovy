@@ -20,7 +20,7 @@ class ImagemController {
     ImagemRepository imagemRepository
 
     @GetMapping
-    List<Imagem> listarTudo() {
+    Iterable<Imagem> listarTudo() {
         imagemRepository.findAll()
     }
 

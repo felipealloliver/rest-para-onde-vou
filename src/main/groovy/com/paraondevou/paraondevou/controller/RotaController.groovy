@@ -18,7 +18,7 @@ class RotaController {
     RotaRepository rotaRepository
 
     @GetMapping
-    List<Rota> listarTudo() {
+    Iterable<Rota> listarTudo() {
         rotaRepository.findAll()
     }
 
@@ -32,7 +32,7 @@ class RotaController {
         }
     }
 
-    @PostMapping("/")
+    @PostMapping
     ResponseEntity<Rota> inserirNovo (@RequestBody Rota rota) {
         rotaRepository.save(rota)
         ResponseEntity.ok(rota)

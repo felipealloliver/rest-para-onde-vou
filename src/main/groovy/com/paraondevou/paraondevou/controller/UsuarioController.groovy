@@ -3,6 +3,7 @@ package com.paraondevou.paraondevou.controller
 import com.paraondevou.paraondevou.entity.Usuario
 import com.paraondevou.paraondevou.repository.UsuarioRepository
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
@@ -19,7 +20,7 @@ class UsuarioController {
     UsuarioRepository usuarioRepository
 
     @GetMapping
-    List<Usuario> listarTudo() {
+    Iterable<Usuario> listarTudo() {
         usuarioRepository.findAll()
     }
 
@@ -34,15 +35,28 @@ class UsuarioController {
         }
     }
 
-    @PostMapping("/")
-    ResponseEntity<Usuario> inserirNovo(@RequestBody Usuario usuario) {
-        def usuarioBD = usuarioRepository.findOneByEmail(usuario.email)
+    @PostMapping
+    ResponseEntity inserirNovo(@RequestBody Usuario usuario) {
+        def usuarioBD = usuarioRepository.findOneByEmailAndDeviceToken(usuario.email, usuario.deviceToken)
 
         if (usuarioBD) {
-            ResponseEntity.status(HttpStatus.FORBIDDEN).body(usuario)
+            ResponseEntity.status(HttpStatus.FORBIDDEN).build()
         } else {
             usuarioRepository.save(usuario)
-            ResponseEntity.ok(usuario)
+            ResponseEntity.status(HttpStatus.CREATED).header("Location", "/" + usuario.id).body()
+        }
+    }
+
+    @PostMapping("/autenticar")
+    ResponseEntity autenticar(@RequestBody Usuario usuario) {
+        def usuarioAutent = usuarioRepository.findOneByEmailAndDeviceToken(usuario.email, usuario.deviceToken)
+
+        if (usuarioAutent) {
+            ResponseEntity.ok().body(usuarioAutent)
+        } else {
+            def usuarioNovo = new Usuario(email: usuario.email, deviceToken: usuario.deviceToken)
+            usuarioRepository.save(usuarioNovo)
+            ResponseEntity.created().body(usuarioNovo)
         }
     }
 }

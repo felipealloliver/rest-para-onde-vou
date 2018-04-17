@@ -19,7 +19,7 @@ class PercursoController {
     PercursoRepository percursoRepository
 
     @GetMapping
-    List<Percurso> listarTudo() {
+    Iterable<Percurso> listarTudo() {
         percursoRepository.findAll()
     }
 
@@ -34,7 +34,7 @@ class PercursoController {
         }
     }
 
-    @PostMapping("/")
+    @PostMapping
     ResponseEntity<Percurso> inserirNovo (@RequestBody Percurso percurso) {
         Percurso percursoBD = percursoRepository.findOneByLocalPartidaAndLocalDestino(percurso.localPartida, percurso.localDestino)
 

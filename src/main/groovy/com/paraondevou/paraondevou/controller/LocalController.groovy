@@ -20,7 +20,7 @@ class LocalController {
     LocalRepository localRepository
 
     @GetMapping
-    List<Local> listarTudo() {
+    Iterable<Local> listarTudo() {
         localRepository.findAll()
     }
 
@@ -35,7 +35,7 @@ class LocalController {
         }
     }
 
-    @PostMapping("/")
+    @PostMapping
     ResponseEntity<Local> inserirNovo(@RequestBody Local local) {
         localRepository.save(local)
         ResponseEntity.ok(local)

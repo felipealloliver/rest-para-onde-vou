@@ -7,4 +7,5 @@ import org.springframework.stereotype.Repository
 @Repository
 interface UsuarioRepository extends PagingAndSortingRepository<Usuario, Long> {
     Usuario findOneByEmail(String email)
+    Usuario findOneByEmailAndDeviceToken(String email, String deviceID)
 }
