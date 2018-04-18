@@ -6,5 +6,5 @@ import org.springframework.stereotype.Repository
 
 @Repository
 interface ImagemRepository extends PagingAndSortingRepository<Imagem, Long> {
-
+    Imagem findOneById(Long id)
 }

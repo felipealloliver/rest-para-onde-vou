@@ -6,5 +6,5 @@ import org.springframework.stereotype.Repository
 
 @Repository
 interface LocalRepository extends PagingAndSortingRepository<Local, Long> {
-
+    Local findOneById(Long id)
 }
