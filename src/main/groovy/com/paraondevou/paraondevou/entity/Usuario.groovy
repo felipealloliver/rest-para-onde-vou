@@ -12,6 +12,7 @@ class Usuario {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id
 
+    Boolean ativo
     String email
     String deviceToken
 }

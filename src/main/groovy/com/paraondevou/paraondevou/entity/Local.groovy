@@ -16,6 +16,7 @@ class Local {
     @OneToOne
     Imagem imagem
 
+    Boolean ativo
     String nomeLocal
     String qrCode
 }
