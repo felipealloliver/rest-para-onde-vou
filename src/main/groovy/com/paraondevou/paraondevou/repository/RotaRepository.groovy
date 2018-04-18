@@ -6,5 +6,5 @@ import org.springframework.stereotype.Repository
 
 @Repository
 interface RotaRepository extends PagingAndSortingRepository<Rota, Long> {
-
+    Rota findOneById(Long id)
 }
