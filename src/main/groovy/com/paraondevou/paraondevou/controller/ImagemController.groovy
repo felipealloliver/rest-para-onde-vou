@@ -3,6 +3,7 @@ package com.paraondevou.paraondevou.controller
 import com.paraondevou.paraondevou.entity.Imagem
 import com.paraondevou.paraondevou.repository.ImagemRepository
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
@@ -28,7 +29,7 @@ class ImagemController {
         Imagem imagem = new Imagem(imagem: file.getBytes())
         imagemRepository.save(imagem)
 
-        ResponseEntity.ok().header('identifier', imagem.id).body('filename: ' + file.name + '\n' + 'size: ' + file.size)
+        ResponseEntity.status(HttpStatus.CREATED).header("Identifier", imagem.id.toString()).body('filename: ' + file.name + '\n' + 'size: ' + file.size)
     }
 
     @GetMapping
