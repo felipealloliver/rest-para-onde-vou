@@ -2,6 +2,7 @@ package com.paraondevou.paraondevou.entity
 
 import javassist.bytecode.ByteArray
 
+import javax.persistence.Column
 import javax.persistence.Entity
 import javax.persistence.GeneratedValue
 import javax.persistence.GenerationType
@@ -15,7 +16,9 @@ class Imagem {
     Long id
 
     Boolean ativo
+    @Column (length = 100)
     String descricaoImagem
 
-    String imagem
+    @Column (length = 16777215)
+    Byte[] imagem
 }
