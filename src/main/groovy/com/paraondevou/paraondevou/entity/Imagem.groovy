@@ -1,5 +1,6 @@
 package com.paraondevou.paraondevou.entity
 
+import com.fasterxml.jackson.annotation.JsonIgnore
 import javassist.bytecode.ByteArray
 
 import javax.persistence.Column
@@ -15,10 +16,13 @@ class Imagem {
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     Long id
 
+    @JsonIgnore
     Boolean ativo
+
     @Column (length = 100)
     String descricaoImagem
 
+    @JsonIgnore
     @Column (length = 16777215)
     Byte[] imagem
 }

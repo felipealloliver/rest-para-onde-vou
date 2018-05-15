@@ -20,29 +20,38 @@ class ImagemController {
     @Autowired
     ImagemRepository imagemRepository
 
-    @PostMapping
-    ResponseEntity inserirImagem(@RequestParam("file") MultipartFile file) {
-        if (file.isEmpty()) {
-            ResponseEntity.badRequest().build()
-        }
-
-        Imagem imagem = new Imagem(imagem: file.getBytes())
-        imagemRepository.save(imagem)
-
-        ResponseEntity.status(HttpStatus.CREATED).header("Identifier", imagem.id.toString()).body('filename: ' + file.name + '\n' + 'size: ' + file.size)
-    }
-
     @GetMapping
-    Iterable<Imagem> listarTudo() {
-        imagemRepository.findAll()
+    ResponseEntity negado() {
+        ResponseEntity.status(HttpStatus.FORBIDDEN).build()
     }
 
     @GetMapping("/{id}")
     ResponseEntity listar(@PathVariable("id") Long id) {
-        Optional<Imagem> imagemBD = imagemRepository.findById(id)
+        Imagem imagem = imagemRepository.findOneById(id)
 
-        if (imagemBD) {
-            ResponseEntity.ok(imagemBD.get())
+        if (imagem) {
+            if (imagem.ativo) {
+                ResponseEntity.ok().body(imagem)
+            } else {
+                ResponseEntity.notFound().build()
+            }
+        } else {
+            ResponseEntity.notFound().build()
+        }
+    }
+
+    @PostMapping("/{id}")
+    ResponseEntity atualizardados(@PathVariable("id") Long id, @RequestParam("descricaoImagem") String descricaoImagem) {
+        Imagem imagem = imagemRepository.findOneById(id)
+
+        if (imagem) {
+            if (imagem.ativo) {
+                imagem.descricaoImagem = descricaoImagem
+                imagemRepository.save(imagem)
+                ResponseEntity.created(URI.create('/imagem/' + imagem.id.toString())).build()
+            } else {
+                ResponseEntity.notFound().build()
+            }
         } else {
             ResponseEntity.notFound().build()
         }
@@ -60,6 +69,4 @@ class ImagemController {
             ResponseEntity.notFound().build()
         }
     }
-
-
 }
