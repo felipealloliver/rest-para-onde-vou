@@ -8,5 +8,6 @@ import org.springframework.stereotype.Repository
 @Repository
 interface PercursoRepository extends PagingAndSortingRepository<Percurso, Long> {
     Percurso findOneByLocalPartidaAndLocalDestino(Local localPartida, Local localDestino)
+    Percurso[] findByLocalPartidaAndLocalDestino(Local localPartida, Local localDestino)
     Percurso findOneById(Long id)
 }

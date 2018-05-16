@@ -1,6 +1,8 @@
 package com.paraondevou.paraondevou.controller
 
+import com.paraondevou.paraondevou.entity.Local
 import com.paraondevou.paraondevou.entity.Percurso
+import com.paraondevou.paraondevou.repository.LocalRepository
 import com.paraondevou.paraondevou.repository.PercursoRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
@@ -11,41 +13,64 @@ import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder
+
+import javax.xml.ws.Response
 
 @RestController
 @RequestMapping("/percurso")
 class PercursoController {
     @Autowired
     PercursoRepository percursoRepository
+    @Autowired
+    LocalRepository localRepository
 
     @GetMapping
-    Iterable<Percurso> listarTudo() {
-        percursoRepository.findAll()
+    ResponseEntity acessonegado() {
+        ResponseEntity.status(HttpStatus.FORBIDDEN).build()
     }
 
     @GetMapping("/{id}")
     ResponseEntity listar(@PathVariable("id") Long id) {
-        Optional<Percurso> percursoBD = percursoRepository.findById(id)
+        Percurso percurso = percursoRepository.findOneById(id)
 
-        if (percursoBD) {
-            ResponseEntity.ok(percursoBD.get())
+        if (percurso) {
+            ResponseEntity.ok(percurso)
         } else {
             ResponseEntity.notFound().build()
         }
     }
 
-    @PostMapping
-    ResponseEntity<Percurso> inserirNovo (@RequestBody Percurso percurso) {
-        Percurso percursoBD = percursoRepository.findOneByLocalPartidaAndLocalDestino(percurso.localPartida, percurso.localDestino)
+    @GetMapping("/{localPartida}/{localDestino}")
+    ResponseEntity listaPercursos(@PathVariable("localPartida") Long idLocalPartida, @PathVariable("localPartida") Long idLocalDestino) {
+        Local localPartida = localRepository.findOneById(idLocalPartida)
+        Local localDestino = localRepository.findOneById(idLocalDestino)
 
-        if (percursoBD) {
-            ResponseEntity.status(HttpStatus.FORBIDDEN).body(percursoBD)
+        if ((!localDestino) || (!localPartida)) {
+            ResponseEntity.badRequest().build()
+        } else {
+            Percurso[] percurso = percursoRepository.findByLocalPartidaAndLocalDestino(localPartida, localDestino)
+
+            if (percurso) {
+                ResponseEntity.ok().body(percurso)
+            } else {
+                ResponseEntity.notFound().build()
+            }
+        }
+    }
+
+    @PostMapping
+    ResponseEntity inserirNovo (@RequestBody Percurso percurso) {
+        Local local1 = localRepository.findOneById(percurso.localPartida.id)
+        Local local2 = localRepository.findOneById(percurso.localDestino.id)
+
+        if ((!local1) || (!local2)) {
+            ResponseEntity.badRequest().build()
         } else {
             percursoRepository.save(percurso)
-            URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(percurso.id).toUri()
-            ResponseEntity.created(location).build()
+            ResponseEntity.created().header("identifier", percurso.id.toString()).build()
         }
     }
 

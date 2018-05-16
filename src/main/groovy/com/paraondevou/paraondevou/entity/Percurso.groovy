@@ -1,5 +1,9 @@
 package com.paraondevou.paraondevou.entity
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo
+import com.fasterxml.jackson.annotation.JsonIgnore
+
+import javax.persistence.Column
 import javax.persistence.Entity
 import javax.persistence.GeneratedValue
 import javax.persistence.GenerationType
@@ -12,6 +16,7 @@ class Percurso {
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     Long id
+    Long numOrdem
 
     @ManyToOne
     Local localPartida
@@ -22,7 +27,9 @@ class Percurso {
     @ManyToOne
     Imagem imagem
 
+    @JsonIgnore
     Boolean ativo
-    Long numOrdem
+
+    @Column(length = 100)
     String descricao
 }

@@ -24,5 +24,5 @@ class Imagem {
 
     @JsonIgnore
     @Column (length = 16777215)
-    Byte[] imagem
+    byte[] imagem
 }
