@@ -39,6 +39,7 @@ class LocalController {
 
     @PostMapping
     ResponseEntity<Local> inserirNovo(@RequestBody Local local) {
+        local.ativo = true
         localRepository.save(local)
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(local.id).toUri()
         ResponseEntity.created(location).build()

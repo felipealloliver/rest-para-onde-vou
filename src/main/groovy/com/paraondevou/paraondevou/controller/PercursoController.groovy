@@ -51,9 +51,9 @@ class PercursoController {
         if ((!localDestino) || (!localPartida)) {
             ResponseEntity.badRequest().build()
         } else {
-            Percurso[] percurso = percursoRepository.findByLocalPartidaAndLocalDestino(localPartida, localDestino)
+            List<Percurso> percurso = percursoRepository.findByLocalPartidaAndLocalDestino(localPartida, localDestino)
 
-            if (percurso) {
+            if (percurso.empty) {
                 ResponseEntity.ok().body(percurso)
             } else {
                 ResponseEntity.notFound().build()

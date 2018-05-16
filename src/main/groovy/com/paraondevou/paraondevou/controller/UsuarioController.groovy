@@ -39,11 +39,12 @@ class UsuarioController {
 
     @PostMapping
     ResponseEntity inserirNovo(@RequestBody Usuario usuario) {
-        def usuarioBD = usuarioRepository.findOneByEmailAndDeviceToken(usuario.email, usuario.deviceToken)
+        Usuario usuarioBD = usuarioRepository.findOneByEmail(usuario.email)
 
         if (usuarioBD) {
             ResponseEntity.status(HttpStatus.FORBIDDEN).build()
         } else {
+            usuario.ativo = true
             usuarioRepository.save(usuario)
             ResponseEntity.status(HttpStatus.CREATED).header("Location", "/" + usuario.id).body()
         }
@@ -51,15 +52,12 @@ class UsuarioController {
 
     @PostMapping("/autenticar")
     ResponseEntity autenticar(@RequestBody Usuario usuario) {
-        def usuarioAutent = usuarioRepository.findOneByEmailAndDeviceToken(usuario.email, usuario.deviceToken)
+        Usuario usuarioAutent = usuarioRepository.findOneByEmailAndSenha(usuario.email, usuario.senha)
 
         if (usuarioAutent) {
             ResponseEntity.ok().body(usuarioAutent)
         } else {
-            def usuarioNovo = new Usuario(email: usuario.email, deviceToken: usuario.deviceToken)
-            usuarioRepository.save(usuarioNovo)
-            URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(usuario.id).toUri()
-            ResponseEntity.created(location).build()
+            ResponseEntity.status(HttpStatus.FORBIDDEN).build()
         }
     }
 
