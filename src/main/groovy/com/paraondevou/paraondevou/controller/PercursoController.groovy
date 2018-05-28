@@ -55,7 +55,7 @@ class PercursoController {
             //ResponseEntity.ok().body(percursoRepository.findByLocalPartidaAndLocalDestino(localPartida, localDestino))
             // ResponseEntity.ok().body(percursoRepository.findOneByLocalPartidaAndLocalDestinoAndNumOrdem(localPartida, localDestino, 1))
             //ResponseEntity.ok().body('ok')
-            ResponseEntity.ok(percurso)
+            ResponseEntity.ok().body(percurso)
         }
     }
 
