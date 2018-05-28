@@ -44,7 +44,7 @@ class PercursoController {
     }
 
     @GetMapping("/{localPartida}/{localDestino}")
-    ResponseEntity listaPercursos(@PathVariable("localPartida") Long idLocalPartida, @PathVariable("localPartida") Long idLocalDestino) {
+    ResponseEntity listaPercursos(@PathVariable("localPartida") Long idLocalPartida, @PathVariable("localDestino") Long idLocalDestino) {
         Local localPartida = localRepository.findOneById(idLocalPartida)
         Local localDestino = localRepository.findOneById(idLocalDestino)
         List<Percurso> percurso = percursoRepository.findByLocalPartidaAndLocalDestino(localPartida, localDestino)
