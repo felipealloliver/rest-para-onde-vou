@@ -22,8 +22,8 @@ class LocalController {
     LocalRepository localRepository
 
     @GetMapping
-    Iterable<Local> listarTudo() {
-        localRepository.findAll()
+    ResponseEntity listarTudo() {
+        ResponseEntity.ok().body(localRepository.findByAtivo(true))
     }
 
     @GetMapping("/{id}")

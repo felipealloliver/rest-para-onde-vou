@@ -44,20 +44,16 @@ class PercursoController {
     }
 
     @GetMapping("/{localPartida}/{localDestino}")
-    ResponseEntity<List> listaPercursos(@PathVariable("localPartida") Long idLocalPartida, @PathVariable("localPartida") Long idLocalDestino) {
+    ResponseEntity listaPercursos(@PathVariable("localPartida") Long idLocalPartida, @PathVariable("localPartida") Long idLocalDestino) {
         Local localPartida = localRepository.findOneById(idLocalPartida)
         Local localDestino = localRepository.findOneById(idLocalDestino)
 
         if ((!localDestino) || (!localPartida)) {
             ResponseEntity.badRequest().build()
         } else {
-            List<Percurso> percurso = percursoRepository.findByLocalPartidaAndLocalDestino(localPartida, localDestino)
-
-            if (percurso.empty) {
-                ResponseEntity.ok().body(percurso)
-            } else {
-                ResponseEntity.notFound().build()
-            }
+            // ResponseEntity.ok().body(percursoRepository.findByLocalPartidaAndLocalDestino(localPartida, localDestino))
+            // ResponseEntity.ok().body(percursoRepository.findOneByLocalPartidaAndLocalDestinoAndNumOrdem(localPartida, localDestino, 1))
+            ResponseEntity.ok().body('ok')
         }
     }
 
