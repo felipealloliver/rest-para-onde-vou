@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
@@ -46,6 +47,13 @@ class UsuarioController {
         } else {
             usuario.ativo = true
             usuarioRepository.save(usuario)
+
+            AuthenticationManagerBuilder auth = new AuthenticationManagerBuilder()
+            auth.inMemoryAuthentication()
+                    .withUser(usuario.email)
+                    .password("{noop}" + usuario.senha)
+                    .roles("ADMIN")
+
             ResponseEntity.status(HttpStatus.CREATED).header("Location", "/" + usuario.id).body()
         }
     }
