@@ -3,10 +3,15 @@ package com.paraondevou.paraondevou.controller
 import com.paraondevou.paraondevou.entity.Usuario
 import com.paraondevou.paraondevou.repository.UsuarioRepository
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.context.annotation.Bean
 import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder
+import org.springframework.security.core.GrantedAuthority
+import org.springframework.security.core.authority.SimpleGrantedAuthority
+import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
@@ -48,11 +53,14 @@ class UsuarioController {
             usuario.ativo = true
             usuarioRepository.save(usuario)
 
-            AuthenticationManagerBuilder auth = new AuthenticationManagerBuilder()
-            auth.inMemoryAuthentication()
-                    .withUser(usuario.email)
-                    .password("{noop}" + usuario.senha)
-                    .roles("ADMIN")
+            List<GrantedAuthority> authorities = new ArrayList<>()
+            authorities.add(new SimpleGrantedAuthority("ADMIN"))
+            SecurityContextHolder.getContext().setAuthentication(
+                    new UsernamePasswordAuthenticationToken(
+                            SecurityContextHolder.getContext().getAuthentication().getPrincipal(),
+                            SecurityContextHolder.getContext().getAuthentication().getCredentials(),
+                            authorities)
+            )
 
             ResponseEntity.status(HttpStatus.CREATED).header("Location", "/" + usuario.id).body()
         }
